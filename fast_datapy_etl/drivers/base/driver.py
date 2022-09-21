@@ -5,7 +5,7 @@ from queue import Queue, deque
 from functools import cached_property
 from ..config.settings import settings
 from .errors import *
-
+from contextlib import contextmanager
 
 
 class BASE_DRIVER(Enum):
@@ -35,7 +35,7 @@ class BaseDriver:
         self.settings_dict = settings_dict
         self.queries_log = deque(maxlen=self.queries_limit)
         self.force_debug_cursor = False
-
+        self.conn_params = {}
         # Transaction related attributes.
         # Tracks if the connection is in autocommit mode. Per PEP 249, by
         # default, it isn't.

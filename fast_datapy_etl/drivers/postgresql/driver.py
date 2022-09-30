@@ -25,19 +25,19 @@ class PostgresDriver(BaseDriver):
                 raise Exception(f"These values must be inside de connection string: {check}")
 
 
-
     def get_new_connection(self):
         conn_params = self.conn_params
         if conn_params is None:
-            raise Exception("The connection string is None")
+            raise Exception("Set connection params to create a connection")
         else:
             if self.base_driver == BASE_DRIVER.ODBC:
-                print(self.conn_params)
                 self.connection = pyodbc.connect(self.conn_params)
                 return self.connection
 
-if __name__ == "__main__":
-    pos = PostgresDriver({},BASE_DRIVER.ODBC,"hi")
-    pos.get_connection_params(User="postgres",DRIVER='{psqlodbcw.so}',Password='admin',Database='postgres',Server='127.0.0.1',Port='5432')
-    con = pos.get_new_connection()
-    print(con)
+    def create_cursor(self):
+        if self.connection is not None:
+            self.cursor = self.connection.cursor()
+        else:
+            raise Exception("For creating a cursor the connection must have been created")
+
+

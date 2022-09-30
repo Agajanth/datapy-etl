@@ -6,8 +6,9 @@ from typing import List
 def contains(*args, **kwg):
     is_not_contained:List = []
     check_all:bool = True
+    kwg_keys = kwg.keys()
     for val in args[0]:
-        if kwg[str(val)]:
+        if val in kwg_keys:
             continue
         else:
             check_all = False
